@@ -1,34 +1,21 @@
-import { useState } from "react";
-import TodoComponent from "../Todo/Todo";
-import { Todo } from "./types";
+import TodoComponent from '../Todo/Todo';
+import { Todo } from './types';
 
 type Props = {
   items: Todo[];
+  onChangeTodoStatus: (id: number) => void;
+  onDestroyTodo: (id: number) => void;
 };
 
-const Todos = ({ items }: Props) => {
-  const [todos, setTodos] = useState(items);
-
-  const onClickTodo = (id: Todo["id"]) => {
-    setTodos([
-      ...todos.map((todo) =>
-        todo.id === id ? { ...todo, completed: !todo.completed } : todo
-      ),
-    ]);
-  };
-
-  const onDestroyTodo = (id: Todo["id"]) => {
-    setTodos([...todos.filter((todo) => todo.id !== id)]);
-  };
-
+const Todos = ({ items, onChangeTodoStatus, onDestroyTodo }: Props) => {
   return (
     <ul className="todo-list">
-      {todos.map((item) => (
-        <li key={item.id} className={item.completed ? "completed" : ""}>
+      {items.map((item) => (
+        <li key={item.id} className={item.completed ? 'completed' : ''}>
           <TodoComponent
             data={item}
             onClick={() => {
-              onClickTodo(item.id);
+              onChangeTodoStatus(item.id);
             }}
             onDestroy={onDestroyTodo}
           />
